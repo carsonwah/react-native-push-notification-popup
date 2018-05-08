@@ -1,0 +1,38 @@
+{
+  "name": "react-native-push-notification-popup",
+  "version": "0.1.0",
+  "description": "React Native Push Notification Popup Component",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carsonwah/react-native-push-notification-popup.git"
+  },
+  "keywords": [
+    "react",
+    "react-native",
+    "react-component",
+    "push-notification",
+    "ios",
+    "android",
+    "modal"
+  ],
+  "author": "Carson Wah",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/carsonwah/react-native-push-notification-popup/issues"
+  },
+  "homepage": "https://github.com/carsonwah/react-native-push-notification-popup#readme",
+  "devDependencies": {
+    "babel-eslint": "^8.2.3",
+    "babel-preset-react-native": "^4.0.0",
+    "eslint": "^4.19.1",
+    "eslint-plugin-react": "^7.7.0"
+  },
+  "dependencies": {
+    "prop-types": "^15.6.1",
+    "react-native-iphone-x-helper": "^1.0.2"
+  }
+}
