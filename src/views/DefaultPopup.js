@@ -30,15 +30,44 @@ const CONTAINER_MARGIN_TOP = (
 // const CONTENT_MARGIN_HORIZONTAL = 16;
 
 export default class DefaultPopup extends Component {
-  static propTypes = {
 
+  static propTypes = {
+    onPress: PropTypes.func,
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      slideInAnimationValue: new Animated.Value(0),
+    };
+  }
+
+  componentDidMount() {
+    const slideDownFromTopAnimation = Animated.timing(this.state.slideInAnimationValue, { toValue: 1, duration: 500, });
+    slideDownFromTopAnimation.start();
   }
 
   render() {
+    const { slideInAnimationValue } = this.state;
+    const slideInAnimationStyle = {
+      transform: [{
+        translateY: slideInAnimationValue.interpolate({
+          inputRange: [0, 1],
+          outputRange: [-130, 0]
+        }),
+      }],
+    };
+    const animatedContainerStyle = [
+      styles.popupContainer,
+      slideInAnimationStyle,
+    ];
+
     return (
       <View style={styles.fullScreenContainer}>
-        <View style={styles.popupContainer}>
 
+        <View style={styles.fullScreenOverlay} />
+
+        <Animated.View style={animatedContainerStyle}>
           <View style={styles.popupHeaderContainer}>
             <View style={styles.headerIconContainer}>
             </View>
@@ -49,7 +78,6 @@ export default class DefaultPopup extends Component {
               <Text style={styles.headerTime} numberOfLines={1}>{'Now'}</Text>
             </View>
           </View>
-
           <View style={styles.contentContainer}>
             <View style={styles.contentTitleContainer}>
               <Text style={styles.contentTitle}>{'Hello'}</Text>
@@ -58,8 +86,8 @@ export default class DefaultPopup extends Component {
               <Text style={styles.contentText}>{'Line 1\nLine 2\nLine 3\nblahblahblah...'}</Text>
             </View>
           </View>
+        </Animated.View>
 
-        </View>
       </View>
     );
   }
@@ -74,13 +102,17 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     zIndex: 1000,
+  },
+  fullScreenOverlay: {
+    ...StyleSheet.absoluteFillObject,
     backgroundColor: 'grey',  // TEMP
   },
   popupContainer: {
     minHeight: 86,
     width: deviceWidth - (8 * 2),
-    marginTop: CONTAINER_MARGIN_TOP,
-    marginHorizontal: 8,
+    top: CONTAINER_MARGIN_TOP,
+    // marginTop: CONTAINER_MARGIN_TOP,
+    // marginHorizontal: 8,
     backgroundColor: 'white',  // TEMP
     borderRadius: 12,
     overflow: 'hidden',
