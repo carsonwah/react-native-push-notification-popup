@@ -79,8 +79,10 @@ componentDidMount() {
 
 - [ ] Customizing props: speed, duration, etc
 - [ ] Android material design style
+- [ ] Other types of popup, e.g. without app icon
 - [ ] More usage examples
 - [ ] Transparent Background
+- [ ] Identify peerDependencies on react-native
 
 ## License
 
