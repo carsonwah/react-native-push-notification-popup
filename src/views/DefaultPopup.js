@@ -117,9 +117,6 @@ export default class DefaultPopup extends Component {
 
     return (
       <View style={styles.fullScreenContainer}>
-
-        <View style={styles.fullScreenOverlay} />
-
         {
           !!show &&
           <Animated.View
@@ -238,19 +235,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: 1000,
   },
-  fullScreenOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'grey',  // TEMP
-  },
+  // fullScreenOverlay: {
+  //   ...StyleSheet.absoluteFillObject,
+  //   backgroundColor: 'grey',  // DEBUG
+  // },
   popupContainer: {
     minHeight: 86,
     width: deviceWidth - (8 * 2),
     top: CONTAINER_MARGIN_TOP,
-    // marginTop: CONTAINER_MARGIN_TOP,
-    // marginHorizontal: 8,
     backgroundColor: 'white',  // TEMP
     borderRadius: 12,
-    overflow: 'hidden',
+    // overflow: 'hidden',
+
+    // === Shadows ===
+    // Android
+    elevation: 2,
+    // iOS
+    shadowColor: '#000000',
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    shadowOffset: {
+      height: 1,
+      width: 0,
+    },
   },
   popupHeaderContainer: {
     height: 32,
