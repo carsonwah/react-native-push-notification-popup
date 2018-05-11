@@ -1,6 +1,6 @@
 # React Native Push Notification Popup
 
-[TODO] preview gif
+![iOS Preview](https://github.com/carsonwah/_file_hosting/blob/master/react-native-push-notification-popup/ios-example.gif) ![Android Preview](https://github.com/carsonwah/_file_hosting/blob/master/react-native-push-notification-popup/android-example.gif)
 
 ## Features
 
