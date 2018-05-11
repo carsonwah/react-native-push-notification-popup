@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Animated, View, Text, Dimensions, Platform, StatusBar, StyleSheet } from 'react-native';
+import { Animated, View, Text, Image, Dimensions, Platform, StatusBar, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { isIphoneX } from 'react-native-iphone-x-helper';
@@ -12,84 +12,166 @@ const CONTAINER_MARGIN_TOP = (
     :
     StatusBar.currentHeight);
 
-// // Main Container
-// const CONTAINER_MARGIN_HORIZONTAL = 8;
-// const CONTAINER_BORDER_RADIUS = 12;
-// const CONTAINER_MIN_HEIGHT = 86;
+const getAnimatedContainerStyle = (slideInAnimationValue) => {
+  // Map 0-1 value to translateY value
+  const slideInAnimationStyle = {
+    transform: [{
+      translateY: slideInAnimationValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: [-150, 0]
+      }),
+    }],
+  };
 
-// // Header
-// const HEADER_CONTAINER_HEIGHT = 32;
-// const HEADER_CONTENT_HEIGHT = 20;
-// const HEADER_CONTENT_MARGIN_VERTICAL = 6;
-// const HEADER_ICON_MARGIN_HORIZONTAL = 6;
-// const HEADER_TIME_MARGIN_HORIZONTAL = 16;
+  // Combine with original container style
+  const animatedContainerStyle = [
+    styles.popupContainer,
+    slideInAnimationStyle,
+  ];
 
-// // Content
-// const CONTENT_MARGIN_TOP = 8;
-// const CONTENT_MARGIN_BOTTOM = 10;
-// const CONTENT_MARGIN_HORIZONTAL = 16;
+  return animatedContainerStyle;
+};
 
 export default class DefaultPopup extends Component {
 
   static propTypes = {
-    onPress: PropTypes.func,
-  }
+    // show: PropTypes.bool,
+  };
 
   constructor(props) {
     super(props);
-    this.state = {
+    this.initialState = {
+      show: false,
+      /*
+        Use value 0 - 1 to control the whole animation
+        Then map it to actual behaviour in style in render
+       */
       slideInAnimationValue: new Animated.Value(0),
+      slideOutTimer: null,
+
+      onPress: null,
+      appIconSource: null,
+      appTitle: null,
+      timeText: null,
+      title: null,
+      body: null,
+    };
+    this.state = {
+      ...this.initialState,
     };
   }
 
-  componentDidMount() {
-    const slideDownFromTopAnimation = Animated.timing(this.state.slideInAnimationValue, { toValue: 1, duration: 500, });
-    slideDownFromTopAnimation.start();
-  }
+  // componentDidMount() {
+  // }
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   // Check if "show" prop has changed from false to true
+  //   if (!prevProps.show && this.props.show) {
+  //     // console.log('props.show changes from true to false!');  // DEBUG
+  //     const { slideOutTimer } = this.state;
+  //     clearTimeout(slideOutTimer);
+  //     this.showAndSlideIn();
+  //   }
+
+  //   // From true to false
+  //   if (prevProps.show && !this.props.show) {
+  //     // console.log('props.show changes from false to true!');  // DEBUG
+  //     const { slideOutTimer } = this.state;
+  //     if (slideOutTimer) {
+  //       clearTimeout(slideOutTimer);
+  //       this.slideOutAndDismiss();
+  //     }
+  //   }
+  // }
 
   render() {
-    const { slideInAnimationValue } = this.state;
-    const slideInAnimationStyle = {
-      transform: [{
-        translateY: slideInAnimationValue.interpolate({
-          inputRange: [0, 1],
-          outputRange: [-130, 0]
-        }),
-      }],
-    };
-    const animatedContainerStyle = [
-      styles.popupContainer,
-      slideInAnimationStyle,
-    ];
+    // const { onPress, appIconSource, appTitle, timeText, title, body } = this.props;
+    const {
+      show, slideInAnimationValue,
+      onPress, appIconSource, appTitle, timeText, title, body
+    } = this.state;
 
     return (
       <View style={styles.fullScreenContainer}>
 
         <View style={styles.fullScreenOverlay} />
 
-        <Animated.View style={animatedContainerStyle}>
-          <View style={styles.popupHeaderContainer}>
-            <View style={styles.headerIconContainer}>
-            </View>
-            <View style={styles.headerTextContainer}>
-              <Text style={styles.headerText} numberOfLines={1}>{'Hello World'}</Text>
-            </View>
-            <View style={styles.headerTimeContainer}>
-              <Text style={styles.headerTime} numberOfLines={1}>{'Now'}</Text>
-            </View>
-          </View>
-          <View style={styles.contentContainer}>
-            <View style={styles.contentTitleContainer}>
-              <Text style={styles.contentTitle}>{'Hello'}</Text>
-            </View>
-            <View style={styles.contentTextContainer}>
-              <Text style={styles.contentText}>{'Line 1\nLine 2\nLine 3\nblahblahblah...'}</Text>
-            </View>
-          </View>
-        </Animated.View>
+        {
+          !!show &&
+          <TouchableWithoutFeedback onPress={onPress || function(){}}>
+            <Animated.View style={getAnimatedContainerStyle(slideInAnimationValue)}>
+              <View style={styles.popupHeaderContainer}>
+                <View style={styles.headerIconContainer}>
+                  <Image style={styles.headerIcon} source={appIconSource || null} />
+                </View>
+                <View style={styles.headerTextContainer}>
+                  <Text style={styles.headerText} numberOfLines={1}>{appTitle || ''}</Text>
+                </View>
+                <View style={styles.headerTimeContainer}>
+                  <Text style={styles.headerTime} numberOfLines={1}>{timeText || ''}</Text>
+                </View>
+              </View>
+              <View style={styles.contentContainer}>
+                <View style={styles.contentTitleContainer}>
+                  <Text style={styles.contentTitle}>{title || ''}</Text>
+                </View>
+                <View style={styles.contentTextContainer}>
+                  <Text style={styles.contentText}>{body || ''}</Text>
+                </View>
+              </View>
+            </Animated.View>
+          </TouchableWithoutFeedback>
+        }
 
       </View>
     );
+  }
+
+  clearTimerIfExist = () => {
+    const { slideOutTimer } = this.state;
+    if (slideOutTimer) clearTimeout(slideOutTimer);
+  }
+
+  slideIn = () => {
+    // Animate "this.state.slideInAnimationValue"
+    const { slideInAnimationValue } = this.state;  // Using the new one is fine
+    Animated.timing(slideInAnimationValue, { toValue: 1, duration: 400, })  // TODO: customize
+      .start(({finished}) => {
+        this.countdownToSlideOut();
+      });
+  }
+
+  countdownToSlideOut = () => {
+    const slideOutTimer = setTimeout(() => {
+      this.slideOutAndDismiss();
+    }, 4000);  // TODO: customize
+    this.setState({ slideOutTimer });
+  }
+
+  slideOutAndDismiss = () => {
+    const { slideInAnimationValue } = this.state;
+
+    // Reset animation to 0 && show it && animate
+    Animated.timing(slideInAnimationValue, { toValue: 0, duration: 400, })  // TODO: customize
+      .start(({finished}) => {
+        // Reset everything and hide the popup
+        this.setState({ show: false });
+      });
+  }
+
+  // Public method
+  show = (messageConfig) => {
+    this.clearTimerIfExist();
+
+    // Put message configs into state && show popup
+    const _messageConfig = messageConfig || {};
+    const { onPress, appIconSource, appTitle, timeText, title, body } = _messageConfig;
+    this.setState({
+      show: true,
+      slideInAnimationValue: new Animated.Value(0),
+      slideOutTimer: null,
+      onPress, appIconSource, appTitle, timeText, title, body
+    }, this.slideIn);
   }
 }
 
@@ -132,8 +214,12 @@ const styles = StyleSheet.create({
     width: 20,
     marginLeft: 12,
     marginRight: 8,
-    backgroundColor: 'red',  // TEMP
     borderRadius: 4,
+  },
+  headerIcon: {
+    height: 20,
+    width: 20,
+    resizeMode: 'contain',
   },
   headerTextContainer: {
     flex: 1,
