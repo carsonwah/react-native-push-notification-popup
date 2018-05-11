@@ -11,7 +11,7 @@ const CONTAINER_MARGIN_TOP = (
     ?
     isIphoneX() ? 44 : 20
     :
-    StatusBar.currentHeight);
+    StatusBar.currentHeight + 10);  // Just to add a bit more padding
 
 const slideOffsetYToTranslatePixelMapping = {
   inputRange: [0, 1],
@@ -95,7 +95,7 @@ export default class DefaultPopup extends Component {
   _onPanResponderRelease = (e, gestureState) => {
     // console.log('_onPanResponderRelease', gestureState);  // DEBUG
     const { containerDragOffsetY } = this.state;
-    if (containerDragOffsetY._value < -30) {
+    if (containerDragOffsetY._value < -30) {  // TODO: turn into constant
       // 1. If leaving screen -> slide out
       this.slideOutAndDismiss(200);
     } else {
@@ -220,6 +220,8 @@ export default class DefaultPopup extends Component {
       show: true,
       containerSlideOffsetY: new Animated.Value(0),
       slideOutTimer: null,
+      containerDragOffsetY: new Animated.Value(0),
+      containerScale: new Animated.Value(1),
       onPress, appIconSource, appTitle, timeText, title, body
     }, this.slideIn);
   }
