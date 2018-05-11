@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Animated, View, Text, Image, Dimensions, Platform, StatusBar, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { Animated, View, Text, Image, Dimensions, Platform, StatusBar, StyleSheet, PanResponder, TouchableWithoutFeedback } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { isIphoneX } from 'react-native-iphone-x-helper';
 
 const { width: deviceWidth, height: deviceHeight } = Dimensions.get('window');
+
 const CONTAINER_MARGIN_TOP = (
   Platform.OS === 'ios'
     ?
@@ -12,15 +13,19 @@ const CONTAINER_MARGIN_TOP = (
     :
     StatusBar.currentHeight);
 
-const getAnimatedContainerStyle = (slideInAnimationValue) => {
+const slideOffsetYToTranslatePixelMapping = {
+  inputRange: [0, 1],
+  outputRange: [-150, 0]
+};
+
+const getAnimatedContainerStyle = ({containerSlideOffsetY, containerDragOffsetY, containerScale}) => {
   // Map 0-1 value to translateY value
   const slideInAnimationStyle = {
-    transform: [{
-      translateY: slideInAnimationValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: [-150, 0]
-      }),
-    }],
+    transform: [
+      {translateY: containerSlideOffsetY.interpolate(slideOffsetYToTranslatePixelMapping)},
+      {translateY: containerDragOffsetY},
+      {scale: containerScale},
+    ],
   };
 
   // Combine with original container style
@@ -35,19 +40,28 @@ const getAnimatedContainerStyle = (slideInAnimationValue) => {
 export default class DefaultPopup extends Component {
 
   static propTypes = {
+    // TODO: customizable props
     // show: PropTypes.bool,
   };
 
   constructor(props) {
     super(props);
-    this.initialState = {
+    this.state = {
       show: false,
+
       /*
+        Slide-in Animation
         Use value 0 - 1 to control the whole animation
         Then map it to actual behaviour in style in render
        */
-      slideInAnimationValue: new Animated.Value(0),
+      containerSlideOffsetY: new Animated.Value(0),
       slideOutTimer: null,
+
+      // Drag Gesture
+      containerDragOffsetY: new Animated.Value(0),
+
+      // onPress Feedback
+      containerScale: new Animated.Value(1),  // Directly set a scale
 
       onPress: null,
       appIconSource: null,
@@ -56,38 +70,48 @@ export default class DefaultPopup extends Component {
       title: null,
       body: null,
     };
-    this.state = {
-      ...this.initialState,
-    };
+    this._panResponder = PanResponder.create({
+      onMoveShouldSetResponderCapture: () => true,
+      onMoveShouldSetPanResponderCapture: () => true,
+      onPanResponderGrant: this._onPanResponderGrant,
+      onPanResponderMove: this._onPanResponderMove,
+      onPanResponderRelease: this._onPanResponderRelease,
+    });
   }
 
-  // componentDidMount() {
-  // }
+  _onPanResponderGrant = (e, gestureState) => {
+    // console.log('_onPanResponderGrant', gestureState);  // DEBUG
+  }
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   // Check if "show" prop has changed from false to true
-  //   if (!prevProps.show && this.props.show) {
-  //     // console.log('props.show changes from true to false!');  // DEBUG
-  //     const { slideOutTimer } = this.state;
-  //     clearTimeout(slideOutTimer);
-  //     this.showAndSlideIn();
-  //   }
+  // https://facebook.github.io/react-native/docs/animations.html#tracking-gestures
+  _onPanResponderMove = (e, gestureState) => {
+    // console.log('_onPanResponderMove', gestureState);  // DEBUG
+    const { containerDragOffsetY } = this.state;
+    // Prevent dragging down too much
+    if (containerDragOffsetY._value > 50) return;  // TODO: customize
+    containerDragOffsetY.setValue(gestureState.dy);
+  }
 
-  //   // From true to false
-  //   if (prevProps.show && !this.props.show) {
-  //     // console.log('props.show changes from false to true!');  // DEBUG
-  //     const { slideOutTimer } = this.state;
-  //     if (slideOutTimer) {
-  //       clearTimeout(slideOutTimer);
-  //       this.slideOutAndDismiss();
-  //     }
-  //   }
-  // }
+  _onPanResponderRelease = (e, gestureState) => {
+    // console.log('_onPanResponderRelease', gestureState);  // DEBUG
+    const { containerDragOffsetY } = this.state;
+    if (containerDragOffsetY._value < -30) {
+      // 1. If leaving screen -> slide out
+      this.slideOutAndDismiss(200);
+    } else {
+      // 2. If not leaving screen -> slide back to original position
+      this.clearTimerIfExist();
+      Animated.timing(containerDragOffsetY, { toValue: 0, duration: 200 })
+        .start(({finished}) => {
+          // Reset a new countdown
+          this.countdownToSlideOut();
+        });
+    }
+  }
 
   render() {
-    // const { onPress, appIconSource, appTitle, timeText, title, body } = this.props;
     const {
-      show, slideInAnimationValue,
+      show, containerSlideOffsetY, containerDragOffsetY, containerScale,
       onPress, appIconSource, appTitle, timeText, title, body
     } = this.state;
 
@@ -98,33 +122,61 @@ export default class DefaultPopup extends Component {
 
         {
           !!show &&
-          <TouchableWithoutFeedback onPress={onPress || function(){}}>
-            <Animated.View style={getAnimatedContainerStyle(slideInAnimationValue)}>
-              <View style={styles.popupHeaderContainer}>
-                <View style={styles.headerIconContainer}>
-                  <Image style={styles.headerIcon} source={appIconSource || null} />
+          <Animated.View
+            style={getAnimatedContainerStyle({containerSlideOffsetY, containerDragOffsetY, containerScale})}
+            {...this._panResponder.panHandlers}>
+            <TouchableWithoutFeedback onPress={onPress} onPressIn={this.onPressInFeedback} onPressOut={this.onPressOutFeedback}>
+              <View>
+                <View style={styles.popupHeaderContainer}>
+                  <View style={styles.headerIconContainer}>
+                    <Image style={styles.headerIcon} source={appIconSource || null} />
+                  </View>
+                  <View style={styles.headerTextContainer}>
+                    <Text style={styles.headerText} numberOfLines={1}>{appTitle || ''}</Text>
+                  </View>
+                  <View style={styles.headerTimeContainer}>
+                    <Text style={styles.headerTime} numberOfLines={1}>{timeText || ''}</Text>
+                  </View>
                 </View>
-                <View style={styles.headerTextContainer}>
-                  <Text style={styles.headerText} numberOfLines={1}>{appTitle || ''}</Text>
-                </View>
-                <View style={styles.headerTimeContainer}>
-                  <Text style={styles.headerTime} numberOfLines={1}>{timeText || ''}</Text>
+                <View style={styles.contentContainer}>
+                  <View style={styles.contentTitleContainer}>
+                    <Text style={styles.contentTitle}>{title || ''}</Text>
+                  </View>
+                  <View style={styles.contentTextContainer}>
+                    <Text style={styles.contentText}>{body || ''}</Text>
+                  </View>
                 </View>
               </View>
-              <View style={styles.contentContainer}>
-                <View style={styles.contentTitleContainer}>
-                  <Text style={styles.contentTitle}>{title || ''}</Text>
-                </View>
-                <View style={styles.contentTextContainer}>
-                  <Text style={styles.contentText}>{body || ''}</Text>
-                </View>
-              </View>
-            </Animated.View>
-          </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback>
+          </Animated.View>
         }
 
       </View>
     );
+  }
+
+  onPressInFeedback = () => {
+    // Show feedback as soon as user press down
+    const { containerScale } = this.state;
+    Animated.spring(containerScale, { toValue: 0.95, friction: 8 })
+      .start();
+  }
+
+  onPressOutFeedback = () => {
+    // Show feedback as soon as user press down
+    const { containerScale } = this.state;
+    Animated.spring(containerScale, { toValue: 1, friction: 8 })
+      .start();
+  }
+
+  createOnPressWithCallback = (callback) => {
+    return () => {
+      // slide out
+      this.slideOutAndDismiss(200);
+
+      // Run callback
+      if (callback) callback();
+    };
   }
 
   clearTimerIfExist = () => {
@@ -132,10 +184,10 @@ export default class DefaultPopup extends Component {
     if (slideOutTimer) clearTimeout(slideOutTimer);
   }
 
-  slideIn = () => {
-    // Animate "this.state.slideInAnimationValue"
-    const { slideInAnimationValue } = this.state;  // Using the new one is fine
-    Animated.timing(slideInAnimationValue, { toValue: 1, duration: 400, })  // TODO: customize
+  slideIn = (duration) => {
+    // Animate "this.state.containerSlideOffsetY"
+    const { containerSlideOffsetY } = this.state;  // Using the new one is fine
+    Animated.timing(containerSlideOffsetY, { toValue: 1, duration: duration || 400, })  // TODO: customize
       .start(({finished}) => {
         this.countdownToSlideOut();
       });
@@ -143,16 +195,16 @@ export default class DefaultPopup extends Component {
 
   countdownToSlideOut = () => {
     const slideOutTimer = setTimeout(() => {
-      this.slideOutAndDismiss();
+      // this.slideOutAndDismiss();  // TEMP
     }, 4000);  // TODO: customize
     this.setState({ slideOutTimer });
   }
 
-  slideOutAndDismiss = () => {
-    const { slideInAnimationValue } = this.state;
+  slideOutAndDismiss = (duration) => {
+    const { containerSlideOffsetY } = this.state;
 
     // Reset animation to 0 && show it && animate
-    Animated.timing(slideInAnimationValue, { toValue: 0, duration: 400, })  // TODO: customize
+    Animated.timing(containerSlideOffsetY, { toValue: 0, duration: duration || 400, })  // TODO: customize
       .start(({finished}) => {
         // Reset everything and hide the popup
         this.setState({ show: false });
@@ -165,10 +217,11 @@ export default class DefaultPopup extends Component {
 
     // Put message configs into state && show popup
     const _messageConfig = messageConfig || {};
-    const { onPress, appIconSource, appTitle, timeText, title, body } = _messageConfig;
+    const { onPress: onPressCallback, appIconSource, appTitle, timeText, title, body } = _messageConfig;
+    const onPress = this.createOnPressWithCallback(onPressCallback);
     this.setState({
       show: true,
-      slideInAnimationValue: new Animated.Value(0),
+      containerSlideOffsetY: new Animated.Value(0),
       slideOutTimer: null,
       onPress, appIconSource, appTitle, timeText, title, body
     }, this.slideIn);
