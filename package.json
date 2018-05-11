@@ -1,6 +1,6 @@
 {
   "name": "react-native-push-notification-popup",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "description": "React Native Push Notification Popup Component",
   "main": "src/index.js",
   "scripts": {
@@ -14,10 +14,13 @@
     "react",
     "react-native",
     "react-component",
+    "react-native-component",
     "push-notification",
     "ios",
     "android",
-    "modal"
+    "modal",
+    "popup",
+    "dialog"
   ],
   "author": "Carson Wah",
   "license": "MIT",
