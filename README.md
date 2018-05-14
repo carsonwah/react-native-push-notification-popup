@@ -78,6 +78,7 @@ componentDidMount() {
 ## Roadmap
 
 - [ ] Customizing props: speed, duration, etc
+- [ ] Support image on the right-side
 - [ ] Android material design style
 - [ ] Other types of popup, e.g. without app icon
 - [ ] More usage examples
