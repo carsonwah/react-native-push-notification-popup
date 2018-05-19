@@ -9,6 +9,7 @@
 - Written in pure-JS using official react-native `Animation` package
     - *Which means it supports all Expo/CRNA apps*
 - Support iPhone X (yeah that notch)
+- Support Android native "elevation"
 
 ## Motivations
 
@@ -67,12 +68,12 @@ componentDidMount() {
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| **`onPress`** | Function | null |  |
-| **`appIconSource`** | [Image source](https://facebook.github.io/react-native/docs/image.html#source) | null |  |
-| **`appTitle`** | String | '' |  |
-| **`timeText`** | String | '' |  |
-| **`title`** | String | '' |  |
-| **`body`** | String | '' |  |
+| **`onPress`** | Function | null | Callback to be called when user press the popup |
+| **`appIconSource`** | [Image source](https://facebook.github.io/react-native/docs/image.html#source) | null | Icon on the upper left |
+| **`appTitle`** | String | '' | Usually your app name, but you can also customize it |
+| **`timeText`** | String | '' | Text on the upper right |
+| **`title`** | String | '' | Message title |
+| **`body`** | String | '' | Message body (support multi-line) |
 
 
 ## Roadmap
