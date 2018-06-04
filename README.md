@@ -1,5 +1,10 @@
 # React Native Push Notification Popup
 
+[![npm version](https://badge.fury.io/js/react-native-push-notification-popup.svg)](https://badge.fury.io/js/react-native-push-notification-popup)
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
+[![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://GitHub.com/Naereen/ama)
+
 ![iOS Preview](https://github.com/carsonwah/_file_hosting/blob/master/react-native-push-notification-popup/ios-example.gif?raw=true) ![Android Preview](https://github.com/carsonwah/_file_hosting/blob/master/react-native-push-notification-popup/android-example.gif?raw=true)
 
 ## Features
@@ -12,6 +17,8 @@
 - Support Android native "elevation"
 
 ## Motivations
+
+[Blog post](https://medium.com/@carsonwah/show-push-notification-popup-in-react-native-19db965a5603)
 
 1. In some apps, you may just want to display reminders to user, without going through those troublesome push notification setups
 2. Expo/CNRA apps [cannot display push notification while app is in foreground](https://docs.expo.io/versions/v27.0.0/guides/push-notifications#notification-handling-timing)
