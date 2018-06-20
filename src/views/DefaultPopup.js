@@ -115,10 +115,9 @@ export default class DefaultPopup extends Component {
       onPress, appIconSource, appTitle, timeText, title, body
     } = this.state;
 
-    return (
+    return !!show && (
       <View style={styles.fullScreenContainer}>
         {
-          !!show &&
           <Animated.View
             style={getAnimatedContainerStyle({containerSlideOffsetY, containerDragOffsetY, containerScale})}
             {...this._panResponder.panHandlers}>
