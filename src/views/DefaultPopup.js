@@ -133,36 +133,33 @@ export default class DefaultPopup extends Component {
     }
 
     return (
-
-        <Animated.View
-          style={getAnimatedContainerStyle({containerSlideOffsetY, containerDragOffsetY, containerScale})}
-          {...this._panResponder.panHandlers}>
-          <TouchableWithoutFeedback onPress={onPressAndSlideOut}>
-            <View>
-              <View style={styles.popupHeaderContainer}>
-                <View style={styles.headerIconContainer}>
-                  <Image style={styles.headerIcon} source={appIconSource || null} />
-                </View>
-                <View style={styles.headerTextContainer}>
-                  <Text style={styles.headerText} numberOfLines={1}>{appTitle || ''}</Text>
-                </View>
-                <View style={styles.headerTimeContainer}>
-                  <Text style={styles.headerTime} numberOfLines={1}>{timeText || ''}</Text>
-                </View>
+      <Animated.View
+        style={getAnimatedContainerStyle({containerSlideOffsetY, containerDragOffsetY, containerScale})}
+        {...this._panResponder.panHandlers}>
+        <TouchableWithoutFeedback onPress={onPressAndSlideOut}>
+          <View>
+            <View style={styles.popupHeaderContainer}>
+              <View style={styles.headerIconContainer}>
+                <Image style={styles.headerIcon} source={appIconSource || null} />
               </View>
-              <View style={styles.contentContainer}>
-                <View style={styles.contentTitleContainer}>
-                  <Text style={styles.contentTitle}>{title || ''}</Text>
-                </View>
-                <View style={styles.contentTextContainer}>
-                  <Text style={styles.contentText}>{body || ''}</Text>
-                </View>
+              <View style={styles.headerTextContainer}>
+                <Text style={styles.headerText} numberOfLines={1}>{appTitle || ''}</Text>
+              </View>
+              <View style={styles.headerTimeContainer}>
+                <Text style={styles.headerTime} numberOfLines={1}>{timeText || ''}</Text>
               </View>
             </View>
-          </TouchableWithoutFeedback>
-        </Animated.View>
-
-
+            <View style={styles.contentContainer}>
+              <View style={styles.contentTitleContainer}>
+                <Text style={styles.contentTitle}>{title || ''}</Text>
+              </View>
+              <View style={styles.contentTextContainer}>
+                <Text style={styles.contentText}>{body || ''}</Text>
+              </View>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Animated.View>
     );
   }
 
@@ -244,19 +241,6 @@ export default class DefaultPopup extends Component {
 }
 
 const styles = StyleSheet.create({
-  // fullScreenContainer: {
-  //   ...StyleSheet.absoluteFillObject,
-  //   width: deviceWidth,
-  //   height: deviceHeight,
-  //   flex: 1,
-  //   justifyContent: 'flex-start',
-  //   alignItems: 'center',
-  //   // zIndex: 1000,
-  // },
-  // fullScreenOverlay: {
-  //   ...StyleSheet.absoluteFillObject,
-  //   backgroundColor: 'grey',  // DEBUG
-  // },
   popupContainer: {
     position: 'absolute',
     minHeight: 86,
@@ -265,7 +249,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',  // TEMP
     borderRadius: 12,
     zIndex: 1000,
-    // overflow: 'hidden',
 
     // === Shadows ===
     // Android
