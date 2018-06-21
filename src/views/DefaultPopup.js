@@ -63,7 +63,7 @@ export default class DefaultPopup extends Component {
       // onPress Feedback
       containerScale: new Animated.Value(1),  // Directly set a scale
 
-      onPress: null,
+      onPressAndSlideOut: null,
       appIconSource: null,
       appTitle: null,
       timeText: null,
@@ -71,8 +71,10 @@ export default class DefaultPopup extends Component {
       body: null,
     };
     this._panResponder = PanResponder.create({
-      onMoveShouldSetResponderCapture: () => true,
-      onMoveShouldSetPanResponderCapture: () => true,
+      onStartShouldSetPanResponder: (e, gestureState) => true,
+      // onStartShouldSetPanResponderCapture: (e, gestureState) => false,
+      onMoveShouldSetPanResponder: (e, gestureState) => true,
+      // onMoveShouldSetPanResponderCapture: (e, gestureState) => false,
       onPanResponderGrant: this._onPanResponderGrant,
       onPanResponderMove: this._onPanResponderMove,
       onPanResponderRelease: this._onPanResponderRelease,
@@ -81,6 +83,7 @@ export default class DefaultPopup extends Component {
 
   _onPanResponderGrant = (e, gestureState) => {
     // console.log('_onPanResponderGrant', gestureState);  // DEBUG
+    this.onPressInFeedback();
   }
 
   // https://facebook.github.io/react-native/docs/animations.html#tracking-gestures
@@ -88,13 +91,23 @@ export default class DefaultPopup extends Component {
     // console.log('_onPanResponderMove', gestureState);  // DEBUG
     const { containerDragOffsetY } = this.state;
     // Prevent dragging down too much
-    if (containerDragOffsetY._value > 50) return;  // TODO: customize
-    containerDragOffsetY.setValue(gestureState.dy);
+    const newDragOffset = gestureState.dy < 100 ? gestureState.dy : 100;  // TODO: customize
+    containerDragOffsetY.setValue(newDragOffset);
   }
 
   _onPanResponderRelease = (e, gestureState) => {
     // console.log('_onPanResponderRelease', gestureState);  // DEBUG
-    const { containerDragOffsetY } = this.state;
+    const { onPressAndSlideOut, containerDragOffsetY } = this.state;
+
+    // Present feedback
+    this.onPressOutFeedback();
+
+    // Check if it is onPress
+    if (gestureState.dx === 0 && gestureState.dy === 0) {
+      onPressAndSlideOut();
+    }
+
+    // Check if it is leaving the screen
     if (containerDragOffsetY._value < -30) {  // TODO: turn into constant
       // 1. If leaving screen -> slide out
       this.slideOutAndDismiss(200);
@@ -112,47 +125,49 @@ export default class DefaultPopup extends Component {
   render() {
     const {
       show, containerSlideOffsetY, containerDragOffsetY, containerScale,
-      onPress, appIconSource, appTitle, timeText, title, body
+      onPressAndSlideOut, appIconSource, appTitle, timeText, title, body
     } = this.state;
 
+    if (!show) {
+      return null;
+    }
+
     return (
-      <View style={styles.fullScreenContainer}>
-        {
-          !!show &&
-          <Animated.View
-            style={getAnimatedContainerStyle({containerSlideOffsetY, containerDragOffsetY, containerScale})}
-            {...this._panResponder.panHandlers}>
-            <TouchableWithoutFeedback onPress={onPress} onPressIn={this.onPressInFeedback} onPressOut={this.onPressOutFeedback}>
-              <View>
-                <View style={styles.popupHeaderContainer}>
-                  <View style={styles.headerIconContainer}>
-                    <Image style={styles.headerIcon} source={appIconSource || null} />
-                  </View>
-                  <View style={styles.headerTextContainer}>
-                    <Text style={styles.headerText} numberOfLines={1}>{appTitle || ''}</Text>
-                  </View>
-                  <View style={styles.headerTimeContainer}>
-                    <Text style={styles.headerTime} numberOfLines={1}>{timeText || ''}</Text>
-                  </View>
+
+        <Animated.View
+          style={getAnimatedContainerStyle({containerSlideOffsetY, containerDragOffsetY, containerScale})}
+          {...this._panResponder.panHandlers}>
+          <TouchableWithoutFeedback onPress={onPressAndSlideOut}>
+            <View>
+              <View style={styles.popupHeaderContainer}>
+                <View style={styles.headerIconContainer}>
+                  <Image style={styles.headerIcon} source={appIconSource || null} />
                 </View>
-                <View style={styles.contentContainer}>
-                  <View style={styles.contentTitleContainer}>
-                    <Text style={styles.contentTitle}>{title || ''}</Text>
-                  </View>
-                  <View style={styles.contentTextContainer}>
-                    <Text style={styles.contentText}>{body || ''}</Text>
-                  </View>
+                <View style={styles.headerTextContainer}>
+                  <Text style={styles.headerText} numberOfLines={1}>{appTitle || ''}</Text>
+                </View>
+                <View style={styles.headerTimeContainer}>
+                  <Text style={styles.headerTime} numberOfLines={1}>{timeText || ''}</Text>
                 </View>
               </View>
-            </TouchableWithoutFeedback>
-          </Animated.View>
-        }
+              <View style={styles.contentContainer}>
+                <View style={styles.contentTitleContainer}>
+                  <Text style={styles.contentTitle}>{title || ''}</Text>
+                </View>
+                <View style={styles.contentTextContainer}>
+                  <Text style={styles.contentText}>{body || ''}</Text>
+                </View>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </Animated.View>
 
-      </View>
+
     );
   }
 
   onPressInFeedback = () => {
+    // console.log('PressIn!');  // DEBUG
     // Show feedback as soon as user press down
     const { containerScale } = this.state;
     Animated.spring(containerScale, { toValue: 0.95, friction: 8 })
@@ -160,6 +175,7 @@ export default class DefaultPopup extends Component {
   }
 
   onPressOutFeedback = () => {
+    // console.log('PressOut!');  // DEBUG
     // Show feedback as soon as user press down
     const { containerScale } = this.state;
     Animated.spring(containerScale, { toValue: 1, friction: 8 })
@@ -192,7 +208,7 @@ export default class DefaultPopup extends Component {
 
   countdownToSlideOut = () => {
     const slideOutTimer = setTimeout(() => {
-      // this.slideOutAndDismiss();  // TEMP
+      this.slideOutAndDismiss();
     }, 4000);  // TODO: customize
     this.setState({ slideOutTimer });
   }
@@ -215,38 +231,40 @@ export default class DefaultPopup extends Component {
     // Put message configs into state && show popup
     const _messageConfig = messageConfig || {};
     const { onPress: onPressCallback, appIconSource, appTitle, timeText, title, body } = _messageConfig;
-    const onPress = this.createOnPressWithCallback(onPressCallback);
+    const onPressAndSlideOut = this.createOnPressWithCallback(onPressCallback);
     this.setState({
       show: true,
       containerSlideOffsetY: new Animated.Value(0),
       slideOutTimer: null,
       containerDragOffsetY: new Animated.Value(0),
       containerScale: new Animated.Value(1),
-      onPress, appIconSource, appTitle, timeText, title, body
+      onPressAndSlideOut, appIconSource, appTitle, timeText, title, body
     }, this.slideIn);
   }
 }
 
 const styles = StyleSheet.create({
-  fullScreenContainer: {
-    ...StyleSheet.absoluteFillObject,
-    width: deviceWidth,
-    height: deviceHeight,
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    zIndex: 1000,
-  },
+  // fullScreenContainer: {
+  //   ...StyleSheet.absoluteFillObject,
+  //   width: deviceWidth,
+  //   height: deviceHeight,
+  //   flex: 1,
+  //   justifyContent: 'flex-start',
+  //   alignItems: 'center',
+  //   // zIndex: 1000,
+  // },
   // fullScreenOverlay: {
   //   ...StyleSheet.absoluteFillObject,
   //   backgroundColor: 'grey',  // DEBUG
   // },
   popupContainer: {
+    position: 'absolute',
     minHeight: 86,
     width: deviceWidth - (8 * 2),
     top: CONTAINER_MARGIN_TOP,
     backgroundColor: 'white',  // TEMP
     borderRadius: 12,
+    zIndex: 1000,
     // overflow: 'hidden',
 
     // === Shadows ===
