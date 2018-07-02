@@ -90,8 +90,6 @@ export default class DefaultPopup extends Component {
   _onPanResponderMove = (e, gestureState) => {
     // console.log('_onPanResponderMove', gestureState);  // DEBUG
     const { containerDragOffsetY } = this.state;
-    // fire onPress if we release from a press with < 10px of vertical movement
-    if (gestureState.dy <= 5 && gestureState.dy >= -5) onPress();
     
     // Prevent dragging down too much
     const newDragOffset = gestureState.dy < 100 ? gestureState.dy : 100;  // TODO: customize
