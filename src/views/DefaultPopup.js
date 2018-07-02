@@ -90,7 +90,7 @@ export default class DefaultPopup extends Component {
   _onPanResponderMove = (e, gestureState) => {
     // console.log('_onPanResponderMove', gestureState);  // DEBUG
     const { containerDragOffsetY } = this.state;
-    
+
     // Prevent dragging down too much
     const newDragOffset = gestureState.dy < 100 ? gestureState.dy : 100;  // TODO: customize
     containerDragOffsetY.setValue(newDragOffset);
