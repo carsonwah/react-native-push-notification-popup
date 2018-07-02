@@ -89,7 +89,7 @@ export default class DefaultPopup extends Component {
   // https://facebook.github.io/react-native/docs/animations.html#tracking-gestures
   _onPanResponderMove = (e, gestureState) => {
     // console.log('_onPanResponderMove', gestureState);  // DEBUG
-    const { containerDragOffsetY, onPress } = this.state;
+    const { containerDragOffsetY } = this.state;
     // fire onPress if we release from a press with < 10px of vertical movement
     if (gestureState.dy <= 5 && gestureState.dy >= -5) onPress();
     
@@ -100,7 +100,10 @@ export default class DefaultPopup extends Component {
 
   _onPanResponderRelease = (e, gestureState) => {
     // console.log('_onPanResponderRelease', gestureState);  // DEBUG
-    const { onPressAndSlideOut, containerDragOffsetY } = this.state;
+    const { onPressAndSlideOut, containerDragOffsetY, onPress} = this.state;
+
+    // fire onPress if we release from a press with < 10px of vertical movement
+    if (gestureState.dy <= 5 && gestureState.dy >= -5) onPress();
 
     // Present feedback
     this.onPressOutFeedback();
