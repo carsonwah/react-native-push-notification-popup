@@ -103,7 +103,9 @@ export default class DefaultPopup extends Component {
     this.onPressOutFeedback();
 
     // Check if it is onPress
-    if (gestureState.dx === 0 && gestureState.dy === 0) {
+    // Currently tolerate +-2 movement
+    // Note that "move around, back to original position, release" still triggers onPress
+    if (gestureState.dy <= 2 && gestureState.dy >= -2 && gestureState.dx <= 2 && gestureState.dx >= -2) {
       onPressAndSlideOut();
     }
 
