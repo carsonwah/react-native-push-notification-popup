@@ -13,7 +13,7 @@
 - Support "onPress" gesture feedback
 - Written in pure-JS using official react-native `Animation` package
     - *Which means it supports all Expo/CRNA apps*
-- Support iPhone X (yeah that notch)
+- Support iPhone X, XS, Max (yeah that notch)
 - Support Android native "elevation"
 
 ## Motivations
