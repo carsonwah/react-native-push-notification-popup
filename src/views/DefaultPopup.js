@@ -17,7 +17,7 @@ const slideOffsetYToTranslatePixelMapping = {
   outputRange: [-150, 0]
 };
 
-const horizontalOffset = 8;         // margin from left/right
+const HORIZONTAL_MARGIN = 8; // left/right margin to screen edge
 
 const getAnimatedContainerStyle = ({containerSlideOffsetY, containerDragOffsetY, containerScale}) => {
   // Map 0-1 value to translateY value
@@ -247,9 +247,9 @@ const styles = StyleSheet.create({
   popupContainer: {
     position: 'absolute',
     minHeight: 86,
-    width: deviceWidth - (horizontalOffset * 2),
-    left: horizontalOffset,
-    right: horizontalOffset,
+    width: deviceWidth - (HORIZONTAL_MARGIN * 2),
+    left: HORIZONTAL_MARGIN,
+    right: HORIZONTAL_MARGIN,
     top: CONTAINER_MARGIN_TOP,
     backgroundColor: 'white',  // TEMP
     borderRadius: 12,
