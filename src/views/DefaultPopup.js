@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Animated, View, Text, Image, Dimensions, Platform, StatusBar, StyleSheet, PanResponder, TouchableWithoutFeedback } from 'react-native';
-import PropTypes from 'prop-types';
 
-import { isIphoneX } from 'react-native-iphone-x-helper';
+import { isIphoneX } from '../utils';
 
 const { width: deviceWidth, height: deviceHeight } = Dimensions.get('window');
 

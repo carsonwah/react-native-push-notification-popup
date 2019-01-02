@@ -35,7 +35,5 @@
     "eslint-plugin-react": "^7.7.0"
   },
   "dependencies": {
-    "prop-types": "^15.6.1",
-    "react-native-iphone-x-helper": "^1.0.2"
   }
 }
