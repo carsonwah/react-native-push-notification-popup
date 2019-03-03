@@ -40,6 +40,10 @@ npm install react-native-push-notification-popup --save
 Put it in a wrapper component. (Maybe where you handle your incoming push notifications)
 
 ```javascript
+import NotificationPopup from 'react-native-push-notification-popup';
+
+// ...
+
   render() {
     return (
       <View style={styles.container}>
@@ -85,6 +89,7 @@ componentDidMount() {
 
 ## Roadmap
 
+- [ ] Support showing it globally
 - [ ] Customizing props: speed, duration, etc
 - [ ] Support image on the right-side
 - [ ] Android material design style
