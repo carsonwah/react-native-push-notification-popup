@@ -124,6 +124,42 @@ export default class DefaultPopup extends Component {
         });
     }
   }
+  
+  renderPopupContent() {
+    const { appIconSource, appTitle, timeText, title, body } = this.state;
+    const { renderPopupContent } = this.props;
+    if (renderPopupContent) {
+      return renderPopupContent({ appIconSource, appTitle, timeText, title, body });
+    }
+
+    return (
+      <View>
+        <View style={styles.popupHeaderContainer}>
+          <View style={styles.headerIconContainer}>
+            <Image style={styles.headerIcon} source={appIconSource || null} />
+          </View>
+          <View style={styles.headerTextContainer}>
+            <Text style={styles.headerText} numberOfLines={1}>
+              {appTitle || ''}
+            </Text>
+          </View>
+          <View style={styles.headerTimeContainer}>
+            <Text style={styles.headerTime} numberOfLines={1}>
+              {timeText || ''}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.contentContainer}>
+          <View style={styles.contentTitleContainer}>
+            <Text style={styles.contentTitle}>{title || ''}</Text>
+          </View>
+          <View style={styles.contentTextContainer}>
+            <Text style={styles.contentText}>{body || ''}</Text>
+          </View>
+        </View>
+      </View>
+    );
+  }
 
   render() {
     const {
@@ -140,27 +176,7 @@ export default class DefaultPopup extends Component {
         style={getAnimatedContainerStyle({containerSlideOffsetY, containerDragOffsetY, containerScale})}
         {...this._panResponder.panHandlers}>
         <TouchableWithoutFeedback onPress={onPressAndSlideOut}>
-          <View>
-            <View style={styles.popupHeaderContainer}>
-              <View style={styles.headerIconContainer}>
-                <Image style={styles.headerIcon} source={appIconSource || null} />
-              </View>
-              <View style={styles.headerTextContainer}>
-                <Text style={styles.headerText} numberOfLines={1}>{appTitle || ''}</Text>
-              </View>
-              <View style={styles.headerTimeContainer}>
-                <Text style={styles.headerTime} numberOfLines={1}>{timeText || ''}</Text>
-              </View>
-            </View>
-            <View style={styles.contentContainer}>
-              <View style={styles.contentTitleContainer}>
-                <Text style={styles.contentTitle}>{title || ''}</Text>
-              </View>
-              <View style={styles.contentTextContainer}>
-                <Text style={styles.contentText}>{body || ''}</Text>
-              </View>
-            </View>
-          </View>
+          {this.renderPopupContent()}
         </TouchableWithoutFeedback>
       </Animated.View>
     );
