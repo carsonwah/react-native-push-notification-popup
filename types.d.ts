@@ -8,6 +8,7 @@ declare module 'react-native-push-notification-popup' {
     timeText?: string;
     title?: string;
     body?: string;
+    slideOutTime?: number;
   }
 
   export default class ReactNativePushNotificationPopup extends Component {
