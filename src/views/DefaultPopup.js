@@ -70,6 +70,7 @@ export default class DefaultPopup extends Component {
       timeText: null,
       title: null,
       body: null,
+      slideOutTime: null,
     };
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (e, gestureState) => true,
@@ -209,7 +210,7 @@ export default class DefaultPopup extends Component {
   countdownToSlideOut = () => {
     const slideOutTimer = setTimeout(() => {
       this.slideOutAndDismiss();
-    }, 4000);  // TODO: customize
+    }, this.state.slideOutTime);
     this.setState({ slideOutTimer });
   }
 
@@ -230,7 +231,15 @@ export default class DefaultPopup extends Component {
 
     // Put message configs into state && show popup
     const _messageConfig = messageConfig || {};
-    const { onPress: onPressCallback, appIconSource, appTitle, timeText, title, body } = _messageConfig;
+    const {
+      onPress: onPressCallback,
+      appIconSource,
+      appTitle,
+      timeText,
+      title,
+      body,
+      slideOutTime
+    } = _messageConfig;
     const onPressAndSlideOut = this.createOnPressWithCallback(onPressCallback);
     this.setState({
       show: true,
@@ -238,7 +247,13 @@ export default class DefaultPopup extends Component {
       slideOutTimer: null,
       containerDragOffsetY: new Animated.Value(0),
       containerScale: new Animated.Value(1),
-      onPressAndSlideOut, appIconSource, appTitle, timeText, title, body
+      onPressAndSlideOut,
+      appIconSource,
+      appTitle,
+      timeText,
+      title,
+      body,
+      slideOutTime: typeof slideOutTime !== 'number' ? 4000 : slideOutTime
     }, this.slideIn);
   }
 }
