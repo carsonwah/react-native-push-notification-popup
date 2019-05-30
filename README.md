@@ -85,6 +85,7 @@ componentDidMount() {
 | **`timeText`** | String | '' | Text on the upper right |
 | **`title`** | String | '' | Message title |
 | **`body`** | String | '' | Message body (support multi-line) |
+| **`slideOutTime`** | Number | 4000 | Time until notification slides out |
 
 
 ## Roadmap
