@@ -1,10 +1,10 @@
 declare module 'react-native-push-notification-popup' {
   import { Component } from 'react'
-  import { ViewStyle, ImageStyle, TextStyle } from 'react-native'
+  import { ViewStyle, ImageStyle, TextStyle, ImageSourcePropType } from 'react-native'
 
   interface ShowOptions {
     onPress?: () => void;
-    appIconSource?: string;
+    appIconSource?: ImageSourcePropType;
     appTitle?: string;
     timeText?: string;
     title?: string;
