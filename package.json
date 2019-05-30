@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "types": "./types.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint --fix --ext js src"
   },
   "repository": {
     "type": "git",

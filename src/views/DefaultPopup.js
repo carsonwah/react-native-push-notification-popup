@@ -4,7 +4,7 @@ import { Animated, View, Text, Image, Dimensions, Platform, StatusBar, StyleShee
 
 import { isIphoneX } from '../utils';
 
-const { width: deviceWidth, height: deviceHeight } = Dimensions.get('window');
+const { width: deviceWidth } = Dimensions.get('window');
 
 const CONTAINER_MARGIN_TOP = (
   Platform.OS === 'ios'
