@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Animated, View, Text, Image, Dimensions, Platform, StatusBar, StyleSheet, PanResponder, TouchableWithoutFeedback } from 'react-native';
 
 import { isIphoneX } from '../utils';
@@ -40,28 +39,6 @@ const getAnimatedContainerStyle = ({containerSlideOffsetY, containerDragOffsetY,
 };
 
 export default class DefaultPopup extends Component {
-
-  static propTypes = {
-    style: PropTypes.shape({
-      popupContainer: PropTypes.object,
-      popupHeaderContainer: PropTypes.object,
-      headerIconContainer: PropTypes.object,
-      headerIcon: PropTypes.object,
-      headerTextContainer: PropTypes.object,
-      headerText: PropTypes.object,
-      headerTimeContainer: PropTypes.object,
-      headerTime: PropTypes.object,
-      contentContainer: PropTypes.object,
-      contentTitleContainer: PropTypes.object,
-      contentTitle: PropTypes.object,
-      contentTextContainer: PropTypes.object,
-      contentText: PropTypes.object
-    })
-  };
-
-  static defaultProps = {
-    style: {}
-  };
 
   constructor(props) {
     super(props);
@@ -149,7 +126,6 @@ export default class DefaultPopup extends Component {
       show, containerSlideOffsetY, containerDragOffsetY, containerScale,
       onPressAndSlideOut, appIconSource, appTitle, timeText, title, body
     } = this.state;
-    const { style } = this.props;
 
     if (!show) {
       return null;
@@ -161,23 +137,23 @@ export default class DefaultPopup extends Component {
         {...this._panResponder.panHandlers}>
         <TouchableWithoutFeedback onPress={onPressAndSlideOut}>
           <View>
-            <View style={[styles.popupHeaderContainer, style.popupHeaderContainer]}>
-              <View style={[styles.headerIconContainer, style.headerIconContainer]}>
-                <Image style={[styles.headerIcon, style.headerIcon]} source={appIconSource || null} />
+            <View style={styles.popupHeaderContainer}>
+              <View style={styles.headerIconContainer}>
+                <Image style={styles.headerIcon} source={appIconSource || null} />
               </View>
-              <View style={[styles.headerTextContainer, style.headerTextContainer]}>
-                <Text style={[styles.headerText, style.headerText]} numberOfLines={1}>{appTitle || ''}</Text>
+              <View style={styles.headerTextContainer}>
+                <Text style={styles.headerText} numberOfLines={1}>{appTitle || ''}</Text>
               </View>
-              <View style={[styles.headerTimeContainer, style.headerTimeContainer]}>
-                <Text style={[styles.headerTime, style.headerTime]} numberOfLines={1}>{timeText || ''}</Text>
+              <View style={styles.headerTimeContainer}>
+                <Text style={styles.headerTime} numberOfLines={1}>{timeText || ''}</Text>
               </View>
             </View>
-            <View style={[styles.contentContainer, style.contentContainer]}>
-              <View style={[styles.contentTitleContainer, style.contentTitleContainer]}>
-                <Text style={[styles.contentTitle, style.contentTitle]}>{title || ''}</Text>
+            <View style={styles.contentContainer}>
+              <View style={styles.contentTitleContainer}>
+                <Text style={styles.contentTitle}>{title || ''}</Text>
               </View>
-              <View style={[styles.contentTextContainer, style.contentTextContainer]}>
-                <Text style={[styles.contentText, style.contentText]}>{body || ''}</Text>
+              <View style={styles.contentTextContainer}>
+                <Text style={styles.contentText}>{body || ''}</Text>
               </View>
             </View>
           </View>
