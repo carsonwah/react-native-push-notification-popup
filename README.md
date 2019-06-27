@@ -65,6 +65,7 @@ componentDidMount() {
     timeText: 'Now',
     title: 'Hello World',
     body: 'This is a sample message.\nTesting emoji 😀',
+    slideOutTime: 5000
   });
 }
 ```
@@ -85,6 +86,7 @@ componentDidMount() {
 | **`timeText`** | String | '' | Text on the upper right |
 | **`title`** | String | '' | Message title |
 | **`body`** | String | '' | Message body (support multi-line) |
+| **`slideOutTime`** | Number | 4000 | Time until notification slides out |
 
 
 ## Roadmap

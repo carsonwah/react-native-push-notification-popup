@@ -3,8 +3,9 @@
   "version": "1.2.0",
   "description": "React Native Push Notification Popup Component",
   "main": "src/index.js",
+  "types": "./types.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint --fix --ext js src"
   },
   "repository": {
     "type": "git",
@@ -32,8 +33,11 @@
     "babel-eslint": "^8.2.3",
     "babel-preset-react-native": "^4.0.0",
     "eslint": "^4.19.1",
-    "eslint-plugin-react": "^7.7.0"
+    "eslint-plugin-react": "^7.7.0",
+    "react": "^16.8.6",
+    "react-native": "^0.59.8"
   },
   "dependencies": {
+    "prop-types": "^15.7.2"
   }
 }

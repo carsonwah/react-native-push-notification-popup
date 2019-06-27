@@ -3,7 +3,7 @@ import { Animated, View, Text, Image, Dimensions, Platform, StatusBar, StyleShee
 
 import { isIphoneX } from '../utils';
 
-const { width: deviceWidth, height: deviceHeight } = Dimensions.get('window');
+const { width: deviceWidth } = Dimensions.get('window');
 
 const CONTAINER_MARGIN_TOP = (
   Platform.OS === 'ios'
@@ -40,11 +40,6 @@ const getAnimatedContainerStyle = ({containerSlideOffsetY, containerDragOffsetY,
 
 export default class DefaultPopup extends Component {
 
-  static propTypes = {
-    // TODO: customizable props
-    // show: PropTypes.bool,
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -70,6 +65,7 @@ export default class DefaultPopup extends Component {
       timeText: null,
       title: null,
       body: null,
+      slideOutTime: null,
     };
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (e, gestureState) => true,
@@ -209,7 +205,7 @@ export default class DefaultPopup extends Component {
   countdownToSlideOut = () => {
     const slideOutTimer = setTimeout(() => {
       this.slideOutAndDismiss();
-    }, 4000);  // TODO: customize
+    }, this.state.slideOutTime);
     this.setState({ slideOutTimer });
   }
 
@@ -230,7 +226,15 @@ export default class DefaultPopup extends Component {
 
     // Put message configs into state && show popup
     const _messageConfig = messageConfig || {};
-    const { onPress: onPressCallback, appIconSource, appTitle, timeText, title, body } = _messageConfig;
+    const {
+      onPress: onPressCallback,
+      appIconSource,
+      appTitle,
+      timeText,
+      title,
+      body,
+      slideOutTime
+    } = _messageConfig;
     const onPressAndSlideOut = this.createOnPressWithCallback(onPressCallback);
     this.setState({
       show: true,
@@ -238,7 +242,13 @@ export default class DefaultPopup extends Component {
       slideOutTimer: null,
       containerDragOffsetY: new Animated.Value(0),
       containerScale: new Animated.Value(1),
-      onPressAndSlideOut, appIconSource, appTitle, timeText, title, body
+      onPressAndSlideOut,
+      appIconSource,
+      appTitle,
+      timeText,
+      title,
+      body,
+      slideOutTime: typeof slideOutTime !== 'number' ? 4000 : slideOutTime
     }, this.slideIn);
   }
 }
