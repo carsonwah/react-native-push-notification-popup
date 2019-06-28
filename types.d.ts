@@ -1,18 +1,29 @@
-declare module 'react-native-push-notification-popup' {
-  import { Component } from 'react'
-  import { ImageSourcePropType } from 'react-native'
+/// <reference types="react"/>
+/// <reference types="react-native"/>
 
-  interface ShowOptions {
-    onPress?: () => void;
+declare module "react-native-push-notification-popup" {
+  import { ReactElement, Component } from "react";
+  import { StyleProp, ViewStyle, ImageSourcePropType } from "react-native";
+
+  interface ContentOptionsBase {
     appIconSource?: ImageSourcePropType;
     appTitle?: string;
     timeText?: string;
     title?: string;
     body?: string;
+  }
+
+  interface ShowOptions extends ContentOptionsBase {
+    onPress?: () => void;
     slideOutTime?: number;
   }
 
-  export default class ReactNativePushNotificationPopup extends Component {
+  interface PushNotificationPopupProps {
+    style?: StyleProp<ViewStyle>;
+    renderPopupContent: (options: ContentOptionsBase) => ReactElement;
+  }
+
+  export default class ReactNativePushNotificationPopup extends Component<PushNotificationPopupProps, any> {
     public show(options: ShowOptions): void;
   }
 }
