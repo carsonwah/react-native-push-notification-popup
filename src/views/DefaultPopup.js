@@ -162,6 +162,7 @@ export default class DefaultPopup extends Component {
   }
 
   render() {
+    const { style } = this.props;
     const {
       show, containerSlideOffsetY, containerDragOffsetY, containerScale,
       onPressAndSlideOut, appIconSource, appTitle, timeText, title, body
@@ -176,7 +177,9 @@ export default class DefaultPopup extends Component {
         style={getAnimatedContainerStyle({containerSlideOffsetY, containerDragOffsetY, containerScale})}
         {...this._panResponder.panHandlers}>
         <TouchableWithoutFeedback onPress={onPressAndSlideOut}>
-          {this.renderPopupContent()}
+          <View style={[styles.popupContentContainer, style]}>
+            {this.renderPopupContent()}
+          </View>
         </TouchableWithoutFeedback>
       </Animated.View>
     );
@@ -218,7 +221,7 @@ export default class DefaultPopup extends Component {
     const { containerSlideOffsetY } = this.state;  // Using the new one is fine
     Animated.timing(containerSlideOffsetY, { toValue: 1, duration: duration || 400, })  // TODO: customize
       .start(({finished}) => {
-        this.countdownToSlideOut();
+        // this.countdownToSlideOut();
       });
   }
 
@@ -262,15 +265,17 @@ export default class DefaultPopup extends Component {
 const styles = StyleSheet.create({
   popupContainer: {
     position: 'absolute',
-    minHeight: 86,
     width: deviceWidth - (HORIZONTAL_MARGIN * 2),
     left: HORIZONTAL_MARGIN,
     right: HORIZONTAL_MARGIN,
     top: CONTAINER_MARGIN_TOP,
+    zIndex: 1000,
+  },
+
+  popupContentContainer: {
     backgroundColor: 'white',  // TEMP
     borderRadius: 12,
-    zIndex: 1000,
-
+    minHeight: 86,
     // === Shadows ===
     // Android
     elevation: 2,
@@ -283,6 +288,7 @@ const styles = StyleSheet.create({
       width: 0,
     },
   },
+
   popupHeaderContainer: {
     height: 32,
     backgroundColor: '#F1F1F1',  // TEMP
