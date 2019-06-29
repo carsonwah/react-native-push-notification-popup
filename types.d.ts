@@ -19,7 +19,6 @@ declare module "react-native-push-notification-popup" {
   }
 
   interface PushNotificationPopupProps {
-    style?: StyleProp<ViewStyle>;
     renderPopupContent: (options: ContentOptionsBase) => ReactElement;
   }
 
