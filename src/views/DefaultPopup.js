@@ -129,7 +129,7 @@ export default class DefaultPopup extends Component {
     }
 
     return (
-      <View>
+      <View style={styles.popupContentContainer}>
         <View style={styles.popupHeaderContainer}>
           <View style={styles.headerIconContainer}>
             <Image style={styles.headerIcon} source={appIconSource || null} />
@@ -173,9 +173,7 @@ export default class DefaultPopup extends Component {
         style={getAnimatedContainerStyle({containerSlideOffsetY, containerDragOffsetY, containerScale})}
         {...this._panResponder.panHandlers}>
         <TouchableWithoutFeedback onPress={onPressAndSlideOut}>
-          <View style={[styles.popupContentContainer, style]}>
-            {this.renderPopupContent()}
-          </View>
+          {this.renderPopupContent()}
         </TouchableWithoutFeedback>
       </Animated.View>
     );
