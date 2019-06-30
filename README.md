@@ -74,7 +74,7 @@ componentDidMount() {
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| **`renderPopupContent`** | function <br /> `(options?: { appIconSource?: ImageSourcePropType; appTitle?: string; timeText?: string; title?: string;body?: string; }) => React.ReactElement<any>` | null | Custom PopupContent |
+| **`renderPopupContent`** | function <br /> `(options?: { appIconSource?: ImageSourcePropType; appTitle?: string; timeText?: string; title?: string;body?: string; }) => React.ReactElement<any>` | null | Render your own custom popup body |
 
 ### Methods
 
@@ -93,14 +93,32 @@ componentDidMount() {
 
 ## Roadmap
 
+- [ ] Add testing
+- [ ] Add example/ project
 - [ ] Support showing it globally
 - [ ] Customizing props: speed, duration, etc
 - [ ] Support image on the right-side
 - [ ] Android material design style
 - [ ] Other types of popup, e.g. without app icon
 - [ ] More usage examples
-- [ ] Transparent Background
 - [ ] Identify peerDependencies on react-native
+
+## Contributing
+
+### Debugging
+
+1. Clone this repo
+2. Run `yarn --production`
+   1. *(Installing dependencies without --production will include devDependencies (e.g. react-native), which causes crashes)*
+3. Create a react-native project next to it
+4. Add dependency to package.json
+   1. `"react-native-push-notification-popup": "file:../react-native-push-notification-popup"`
+5. Try it
+
+### Linting
+
+1. Run `yarn` (Install devDependencies)
+2. Run `yarn run lint`
 
 ## License
 
