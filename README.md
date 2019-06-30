@@ -42,8 +42,7 @@ Put it in a wrapper component. (Maybe where you handle your incoming push notifi
 ```javascript
 import NotificationPopup from 'react-native-push-notification-popup';
 
-// ...
-
+class MyComponent extends React.Component {
   render() {
     return (
       <View style={styles.container}>
@@ -52,6 +51,31 @@ import NotificationPopup from 'react-native-push-notification-popup';
       </View>
     );
   }
+// ...
+```
+
+#### Optional: Customize your popup
+
+```javascript
+// Render function
+const renderCustomPopup = ({ appIconSource, appTitle, timeText, title, body }) => (
+  <View>
+    <Text>{title}</Text>
+    <Text>{body}</Text>
+  </View>
+);
+
+class MyComponent extends React.Component {
+  render() {
+      return (
+        <View style={styles.container}>
+          <NotificationPopup
+            ref={ref => this.popup = ref}
+            renderPopupContent={renderCustomPopup} />
+        </View>
+      );
+    }
+// ...
 ```
 
 ### Show it!
