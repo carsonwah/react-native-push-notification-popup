@@ -72,7 +72,9 @@ componentDidMount() {
 
 ### Props
 
-*(Customizing options coming soon)*
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| **`renderPopupContent`** | function <br /> `(options?: { appIconSource?: ImageSourcePropType; appTitle?: string; timeText?: string; title?: string;body?: string; }) => React.ReactElement<any>` | null | Custom PopupContent |
 
 ### Methods
 

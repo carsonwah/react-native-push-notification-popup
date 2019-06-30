@@ -120,8 +120,45 @@ export default class DefaultPopup extends Component {
         });
     }
   }
+  
+  renderPopupContent() {
+    const { appIconSource, appTitle, timeText, title, body } = this.state;
+    const { renderPopupContent } = this.props;
+    if (renderPopupContent) {
+      return renderPopupContent({ appIconSource, appTitle, timeText, title, body });
+    }
+
+    return (
+      <View style={styles.popupContentContainer}>
+        <View style={styles.popupHeaderContainer}>
+          <View style={styles.headerIconContainer}>
+            <Image style={styles.headerIcon} source={appIconSource || null} />
+          </View>
+          <View style={styles.headerTextContainer}>
+            <Text style={styles.headerText} numberOfLines={1}>
+              {appTitle || ''}
+            </Text>
+          </View>
+          <View style={styles.headerTimeContainer}>
+            <Text style={styles.headerTime} numberOfLines={1}>
+              {timeText || ''}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.contentContainer}>
+          <View style={styles.contentTitleContainer}>
+            <Text style={styles.contentTitle}>{title || ''}</Text>
+          </View>
+          <View style={styles.contentTextContainer}>
+            <Text style={styles.contentText}>{body || ''}</Text>
+          </View>
+        </View>
+      </View>
+    );
+  }
 
   render() {
+    const { style } = this.props;
     const {
       show, containerSlideOffsetY, containerDragOffsetY, containerScale,
       onPressAndSlideOut, appIconSource, appTitle, timeText, title, body
@@ -136,27 +173,7 @@ export default class DefaultPopup extends Component {
         style={getAnimatedContainerStyle({containerSlideOffsetY, containerDragOffsetY, containerScale})}
         {...this._panResponder.panHandlers}>
         <TouchableWithoutFeedback onPress={onPressAndSlideOut}>
-          <View>
-            <View style={styles.popupHeaderContainer}>
-              <View style={styles.headerIconContainer}>
-                <Image style={styles.headerIcon} source={appIconSource || null} />
-              </View>
-              <View style={styles.headerTextContainer}>
-                <Text style={styles.headerText} numberOfLines={1}>{appTitle || ''}</Text>
-              </View>
-              <View style={styles.headerTimeContainer}>
-                <Text style={styles.headerTime} numberOfLines={1}>{timeText || ''}</Text>
-              </View>
-            </View>
-            <View style={styles.contentContainer}>
-              <View style={styles.contentTitleContainer}>
-                <Text style={styles.contentTitle}>{title || ''}</Text>
-              </View>
-              <View style={styles.contentTextContainer}>
-                <Text style={styles.contentText}>{body || ''}</Text>
-              </View>
-            </View>
-          </View>
+          {this.renderPopupContent()}
         </TouchableWithoutFeedback>
       </Animated.View>
     );
@@ -198,7 +215,7 @@ export default class DefaultPopup extends Component {
     const { containerSlideOffsetY } = this.state;  // Using the new one is fine
     Animated.timing(containerSlideOffsetY, { toValue: 1, duration: duration || 400, })  // TODO: customize
       .start(({finished}) => {
-        this.countdownToSlideOut();
+        // this.countdownToSlideOut();
       });
   }
 
@@ -256,15 +273,17 @@ export default class DefaultPopup extends Component {
 const styles = StyleSheet.create({
   popupContainer: {
     position: 'absolute',
-    minHeight: 86,
     width: deviceWidth - (HORIZONTAL_MARGIN * 2),
     left: HORIZONTAL_MARGIN,
     right: HORIZONTAL_MARGIN,
     top: CONTAINER_MARGIN_TOP,
+    zIndex: 1000,
+  },
+
+  popupContentContainer: {
     backgroundColor: 'white',  // TEMP
     borderRadius: 12,
-    zIndex: 1000,
-
+    minHeight: 86,
     // === Shadows ===
     // Android
     elevation: 2,
@@ -277,6 +296,7 @@ const styles = StyleSheet.create({
       width: 0,
     },
   },
+
   popupHeaderContainer: {
     height: 32,
     backgroundColor: '#F1F1F1',  // TEMP
