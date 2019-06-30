@@ -178,7 +178,9 @@ export default class DefaultPopup extends Component {
         style={getAnimatedContainerStyle({containerSlideOffsetY, containerDragOffsetY, containerScale})}
         {...this._panResponder.panHandlers}>
         <TouchableWithoutFeedback onPress={onPressAndSlideOut}>
-          {this.renderPopupContent()}
+          <View>
+            {this.renderPopupContent()}
+          </View>
         </TouchableWithoutFeedback>
       </Animated.View>
     );
