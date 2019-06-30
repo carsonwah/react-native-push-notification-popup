@@ -74,7 +74,7 @@ componentDidMount() {
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| **`renderPopupContent`** | function <br /> `(options?: { appIconSource?: ImageSourcePropType; appTitle?: string; timeText?: string; title?: string;body?: string; }) => React.ReactElement<any>` | null | Render your own custom popup body |
+| **`renderPopupContent`** | function <br /> `(options?: { appIconSource?: ImageSourcePropType; appTitle?: string; timeText?: string; title?: string;body?: string; }) => React.ReactElement<any>` | null | Render your own custom popup body (Optional) |
 
 ### Methods
 
