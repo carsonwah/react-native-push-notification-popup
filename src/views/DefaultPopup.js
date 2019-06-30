@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Animated, View, Text, Image, Dimensions, Platform, StatusBar, StyleSheet, PanResponder, TouchableWithoutFeedback } from 'react-native';
 
 import { isIphoneX } from '../utils';
@@ -39,6 +40,10 @@ const getAnimatedContainerStyle = ({containerSlideOffsetY, containerDragOffsetY,
 };
 
 export default class DefaultPopup extends Component {
+
+  static propTypes = {
+    renderPopupContent: PropTypes.func,
+  }
 
   constructor(props) {
     super(props);
