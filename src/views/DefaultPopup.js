@@ -126,7 +126,7 @@ export default class DefaultPopup extends Component {
     }
   }
   
-  renderPopupContent() {
+  renderPopupContent = () => {
     const { appIconSource, appTitle, timeText, title, body } = this.state;
     const { renderPopupContent } = this.props;
     if (renderPopupContent) {
