@@ -215,7 +215,7 @@ export default class DefaultPopup extends Component {
     const { containerSlideOffsetY } = this.state;  // Using the new one is fine
     Animated.timing(containerSlideOffsetY, { toValue: 1, duration: duration || 400, })  // TODO: customize
       .start(({finished}) => {
-        // this.countdownToSlideOut();
+        this.countdownToSlideOut();
       });
   }
 
