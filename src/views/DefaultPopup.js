@@ -158,10 +158,10 @@ export default class DefaultPopup extends Component {
   }
 
   render() {
-    const { style } = this.props;
     const {
-      show, containerSlideOffsetY, containerDragOffsetY, containerScale,
-      onPressAndSlideOut, appIconSource, appTitle, timeText, title, body
+      show,
+      containerSlideOffsetY, containerDragOffsetY, containerScale,
+      onPressAndSlideOut,
     } = this.state;
 
     if (!show) {
