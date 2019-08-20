@@ -19,7 +19,7 @@ declare module "react-native-push-notification-popup" {
   }
 
   interface PushNotificationPopupProps {
-    renderPopupContent: (options: ContentOptionsBase) => ReactElement;
+    renderPopupContent?: (options: ContentOptionsBase) => ReactElement;
   }
 
   export default class ReactNativePushNotificationPopup extends Component<PushNotificationPopupProps, any> {
