@@ -46,13 +46,15 @@ class MyComponent extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <NotificationPopup ref={ref => this.popup = ref} />
         <MaybeYourNavigator />
+        <NotificationPopup ref={ref => this.popup = ref} />
       </View>
     );
   }
 // ...
 ```
+
+> **IMPORTANT**: Remember to put it on the bottom of other components, because React render from back to front in order of declaration. We do not use `zIndex` becuase it is [problematic on Android](https://github.com/carsonwah/react-native-push-notification-popup/issues/21).
 
 #### Optional: Customize your popup
 
