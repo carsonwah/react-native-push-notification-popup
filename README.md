@@ -29,7 +29,10 @@ This package is here to help. Just show your own notification popup to your user
 ## Installation
 
 ```bash
-yarn add react-native-push-notification-popup  # recommended
+# yarn, recommended
+yarn add react-native-push-notification-popup
+
+# or npm
 npm install react-native-push-notification-popup --save
 ```
 
@@ -54,7 +57,7 @@ class MyComponent extends React.Component {
 // ...
 ```
 
-> **IMPORTANT**: Remember to put it on the bottom of other components, because React render from back to front in order of declaration. We do not use `zIndex` becuase it is [problematic on Android](https://github.com/carsonwah/react-native-push-notification-popup/issues/21).
+> **IMPORTANT**: Remember to put it on the **bottom of other components**, because React render from back to front in order of declaration. We do not use `zIndex` becuase it is [problematic on Android](https://github.com/carsonwah/react-native-push-notification-popup/issues/21).
 
 #### Optional: Customize your popup
 
@@ -140,6 +143,7 @@ componentDidMount() {
 4. Add dependency to package.json
    1. `"react-native-push-notification-popup": "file:../react-native-push-notification-popup"`
 5. Try it
+6. Re-run `yarn --production` whenever there is any code change
 
 ### Linting
 
