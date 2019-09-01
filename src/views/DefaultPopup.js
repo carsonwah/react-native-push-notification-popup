@@ -284,7 +284,6 @@ const styles = StyleSheet.create({
     left: HORIZONTAL_MARGIN,
     right: HORIZONTAL_MARGIN,
     top: CONTAINER_MARGIN_TOP,
-    zIndex: 1000,
   },
 
   popupContentContainer: {
