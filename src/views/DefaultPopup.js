@@ -43,6 +43,8 @@ export default class DefaultPopup extends Component {
 
   static propTypes = {
     renderPopupContent: PropTypes.func,
+    shouldChildHandleResponderStart: PropTypes.bool,
+    shouldChildHandleResponderMove: PropTypes.bool,
   }
 
   constructor(props) {
@@ -74,9 +76,9 @@ export default class DefaultPopup extends Component {
     };
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (e, gestureState) => true,
-      // onStartShouldSetPanResponderCapture: (e, gestureState) => false,
+      onStartShouldSetPanResponderCapture: (e, gestureState) => props.shouldChildHandleResponderStart ? false : true,  // Capture child event
       onMoveShouldSetPanResponder: (e, gestureState) => true,
-      // onMoveShouldSetPanResponderCapture: (e, gestureState) => false,
+      onMoveShouldSetPanResponderCapture: (e, gestureState) => props.shouldChildHandleResponderMove ? false : true,  // Capture child event
       onPanResponderGrant: this._onPanResponderGrant,
       onPanResponderMove: this._onPanResponderMove,
       onPanResponderRelease: this._onPanResponderRelease,
