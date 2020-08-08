@@ -67,6 +67,7 @@ const renderCustomPopup = ({ appIconSource, appTitle, timeText, title, body }) =
   <View>
     <Text>{title}</Text>
     <Text>{body}</Text>
+    <Button title='My button' onPress={() => console.log('Popup button onPress!')} />
   </View>
 );
 
@@ -76,7 +77,9 @@ class MyComponent extends React.Component {
         <View style={styles.container}>
           <NotificationPopup
             ref={ref => this.popup = ref}
-            renderPopupContent={renderCustomPopup} />
+            renderPopupContent={renderCustomPopup}
+            shouldChildHandleResponderStart={true}
+            shouldChildHandleResponderMove={true} />
         </View>
       );
     }
@@ -104,6 +107,8 @@ componentDidMount() {
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | **`renderPopupContent`** | function <br /> `(options?: { appIconSource?: ImageSourcePropType; appTitle?: string; timeText?: string; title?: string;body?: string; }) => React.ReactElement<any>` | null | Render your own custom popup body (Optional) |
+| **`shouldChildHandleResponderStart`** | boolean | false | By default, parent popup will prevent bubbling event to child. This should be set to true if you have button inside your custom popup that wants to receive the event. |
+| **`shouldChildHandleResponderMove`** | boolean | false | By default, parent popup will prevent bubbling event to child. This should be set to true if you have button inside your custom popup that wants to receive the event. |
 
 ### Methods
 
