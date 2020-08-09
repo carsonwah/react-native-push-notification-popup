@@ -1,7 +1,8 @@
 # React Native Push Notification Popup
 
-[![npm version](https://badge.fury.io/js/react-native-push-notification-popup.svg)](https://badge.fury.io/js/react-native-push-notification-popup)
-[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
+![npm version](https://img.shields.io/npm/v/react-native-push-notification-popup)
+![npm downloads](https://img.shields.io/npm/dm/react-native-push-notification-popup)
+![npm license](https://img.shields.io/npm/l/react-native-push-notification-popup)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
 [![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://GitHub.com/Naereen/ama)
 
