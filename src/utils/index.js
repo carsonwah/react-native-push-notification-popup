@@ -1,4 +1,4 @@
-import { Dimensions, Platform } from 'react-native';
+import { Dimensions, Platform, StatusBar } from 'react-native';
 
 // Code borrowed from https://github.com/ovr/react-native-status-bar-height
 const STATUSBAR_DEFAULT_HEIGHT = 20;
