@@ -2,16 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Animated, View, Text, Image, Dimensions, Platform, StatusBar, StyleSheet, PanResponder, TouchableWithoutFeedback } from 'react-native';
 
-import { isIphoneX } from '../utils';
+import { getStatusBarHeight } from '../utils';
 
 const { width: deviceWidth } = Dimensions.get('window');
 
-const CONTAINER_MARGIN_TOP = (
-  Platform.OS === 'ios'
-    ?
-    isIphoneX() ? 44 : 20
-    :
-    StatusBar.currentHeight + 10);  // Just to add a bit more padding
+const CONTAINER_MARGIN_TOP = getStatusBarHeight() + 10;  // Just to add a bit more padding
 
 const slideOffsetYToTranslatePixelMapping = {
   inputRange: [0, 1],
