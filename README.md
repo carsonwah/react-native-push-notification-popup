@@ -140,7 +140,11 @@ componentDidMount() {
 
 ## Contributing
 
-### Debugging
+### Using demo project
+
+- Refer to [this demo project](https://github.com/carsonwah/react-native-push-notification-popup-demo-local) for local debugging
+
+### General Steps
 
 1. Clone this repo
 2. Run `yarn --production`
