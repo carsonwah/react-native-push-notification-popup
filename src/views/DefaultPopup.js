@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Animated, View, Text, Image, Dimensions, Platform, StatusBar, StyleSheet, PanResponder, TouchableWithoutFeedback } from 'react-native';
+import { Animated, View, Text, Image, Dimensions, StyleSheet, PanResponder, TouchableWithoutFeedback } from 'react-native';
 
 import { getStatusBarHeight } from '../utils';
 
@@ -125,7 +125,7 @@ export default class DefaultPopup extends Component {
         });
     }
   }
-  
+
   renderPopupContent = () => {
     const { appIconSource, appTitle, timeText, title, body } = this.state;
     const { renderPopupContent } = this.props;
