@@ -22,6 +22,7 @@ declare module "react-native-push-notification-popup" {
     renderPopupContent?: (options: ContentOptionsBase) => ReactElement;
     shouldChildHandleResponderStart?: boolean;
     shouldChildHandleResponderMove?: boolean;
+    isSkipStatusBarPadding?: boolean;
   }
 
   export default class ReactNativePushNotificationPopup extends Component<PushNotificationPopupProps, any> {

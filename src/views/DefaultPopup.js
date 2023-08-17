@@ -6,7 +6,8 @@ import { getStatusBarHeight } from '../utils';
 
 const { width: deviceWidth } = Dimensions.get('window');
 
-const CONTAINER_MARGIN_TOP = getStatusBarHeight() + 10;  // Just to add a bit more padding
+const CONTAINER_MARGIN_TOP_WITHOUT_STATUS_BAR = 10; // Add padding to prevent touching edge of the screen
+const CONTAINER_MARGIN_TOP_WITH_STATUS_BAR = getStatusBarHeight() + CONTAINER_MARGIN_TOP_WITHOUT_STATUS_BAR;
 
 const slideOffsetYToTranslatePixelMapping = {
   inputRange: [0, 1],
@@ -15,7 +16,7 @@ const slideOffsetYToTranslatePixelMapping = {
 
 const HORIZONTAL_MARGIN = 8; // left/right margin to screen edge
 
-const getAnimatedContainerStyle = ({containerSlideOffsetY, containerDragOffsetY, containerScale}) => {
+const getAnimatedContainerStyle = ({containerSlideOffsetY, containerDragOffsetY, containerScale, isSkipStatusBarPadding}) => {
   // Map 0-1 value to translateY value
   const slideInAnimationStyle = {
     transform: [
@@ -28,6 +29,7 @@ const getAnimatedContainerStyle = ({containerSlideOffsetY, containerDragOffsetY,
   // Combine with original container style
   const animatedContainerStyle = [
     styles.popupContainer,
+    isSkipStatusBarPadding ? { top: CONTAINER_MARGIN_TOP_WITHOUT_STATUS_BAR } : { top: CONTAINER_MARGIN_TOP_WITH_STATUS_BAR },
     slideInAnimationStyle,
   ];
 
@@ -40,6 +42,7 @@ export default class DefaultPopup extends Component {
     renderPopupContent: PropTypes.func,
     shouldChildHandleResponderStart: PropTypes.bool,
     shouldChildHandleResponderMove: PropTypes.bool,
+    isSkipStatusBarPadding: PropTypes.bool,
   }
 
   constructor(props) {
@@ -165,6 +168,7 @@ export default class DefaultPopup extends Component {
       containerSlideOffsetY, containerDragOffsetY, containerScale,
       onPressAndSlideOut,
     } = this.state;
+    const { isSkipStatusBarPadding } = this.props;
 
     if (!show) {
       return null;
@@ -172,7 +176,7 @@ export default class DefaultPopup extends Component {
 
     return (
       <Animated.View
-        style={getAnimatedContainerStyle({containerSlideOffsetY, containerDragOffsetY, containerScale})}
+        style={getAnimatedContainerStyle({containerSlideOffsetY, containerDragOffsetY, containerScale, isSkipStatusBarPadding})}
         {...this._panResponder.panHandlers}>
         <TouchableWithoutFeedback onPress={onPressAndSlideOut}>
           <View>
@@ -280,7 +284,7 @@ const styles = StyleSheet.create({
     width: deviceWidth - (HORIZONTAL_MARGIN * 2),
     left: HORIZONTAL_MARGIN,
     right: HORIZONTAL_MARGIN,
-    top: CONTAINER_MARGIN_TOP,
+    // top: CONTAINER_MARGIN_TOP, // Refactored as dynamic style
   },
 
   popupContentContainer: {
