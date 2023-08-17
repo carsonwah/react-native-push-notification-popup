@@ -1,6 +1,6 @@
 {
   "name": "react-native-push-notification-popup",
-  "version": "1.6.2",
+  "version": "1.7.0",
   "description": "React Native Push Notification Popup Component",
   "main": "src/index.js",
   "types": "./types.d.ts",
