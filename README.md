@@ -80,7 +80,8 @@ class MyComponent extends React.Component {
             ref={ref => this.popup = ref}
             renderPopupContent={renderCustomPopup}
             shouldChildHandleResponderStart={true}
-            shouldChildHandleResponderMove={true} />
+            shouldChildHandleResponderMove={true}
+            isSkipStatusBarPadding={true} />
         </View>
       );
     }
@@ -110,6 +111,7 @@ componentDidMount() {
 | **`renderPopupContent`** | function <br /> `(options?: { appIconSource?: ImageSourcePropType; appTitle?: string; timeText?: string; title?: string;body?: string; }) => React.ReactElement<any>` | null | Render your own custom popup body (Optional) |
 | **`shouldChildHandleResponderStart`** | boolean | false | By default, parent popup will prevent bubbling event to child. This should be set to true if you have button inside your custom popup that wants to receive the event. |
 | **`shouldChildHandleResponderMove`** | boolean | false | By default, parent popup will prevent bubbling event to child. This should be set to true if you have button inside your custom popup that wants to receive the event. |
+| **`isSkipStatusBarPadding`** | boolean | false | Set this to true if your app is an Android app with non-translucent StatusBar. ([See #35](https://github.com/carsonwah/react-native-push-notification-popup/issues/35)) |
 
 ### Methods
 
