@@ -127,6 +127,9 @@ componentDidMount() {
 | **`body`** | String | '' | Message body (support multi-line) |
 | **`slideOutTime`** | Number | 4000 | Time until notification slides out |
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=carsonwah/react-native-push-notification-popup&type=Date)](https://star-history.com/#carsonwah/react-native-push-notification-popup&Date)
 
 ## Roadmap
 
